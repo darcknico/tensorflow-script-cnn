@@ -1,0 +1,64 @@
+item {
+  id: 1
+  name: 'Brahma'
+}
+item {
+  id: 2
+  name: 'Budweiser'
+}
+item {
+  id: 3
+  name: 'Corona'
+}
+item {
+  id: 4
+  name: 'Heineken'
+}
+item {
+  id: 5
+  name: 'Iguana'
+}
+item {
+  id: 6
+  name: 'Patagonia Amber Lager'
+}
+item {
+  id: 7
+  name: 'Patagonia Bohemian Pilsener'
+}
+item {
+  id: 8
+  name: 'Quilmes Cristal'
+}
+item {
+  id: 9
+  name: 'Quilmes Bajo Cero'
+}
+item {
+  id: 10
+  name: 'Quilmes Stout'
+}
+item {
+  id: 11
+  name: 'Salta Blanca'
+}
+item {
+  id: 12
+  name: 'Salta Negra'
+}
+item {
+  id: 13
+  name: 'Schneider'
+}
+item {
+  id: 14
+  name: 'Sol'
+}
+item {
+  id: 15
+  name: 'Stella Artois'
+}
+item {
+  id: 16
+  name: 'Otras'
+}

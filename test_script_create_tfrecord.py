@@ -1,34 +1,3 @@
-##Brahma 01
-##Budweiser 02
-##Corona 03
-##Heineken 04
-##Iguana 05
-##Patagonia Amber Lager 06
-##          Bohemian Pilsener 07
-##Quilmes Cristal 08
-##        Bajo Cero 09
-##        Stout 10
-##Salta Blanca 11
-##      Negra 12
-##Schneider 13
-##Sol 14
-##Stella Artois 15
-##Otras 16
-# cd C:\Python36\Lib\site-packages\tensorflow\models
-# python object_detection/train.py --logtostderr 
-# --pipeline_config_path=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/training/ssd_mobilenet_v1_coco.config 
-# --train_dir=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/data
-# 
-# gcloud ml-engine jobs submit training object_detection_`date +%s`
-# --job-dir=gs://dataset-nrl/train
-# --packages dist/object_detection-0.1.tar.gz,slim/dist/slim-0.1.tar.gz
-# --module-name object_detection.train
-# --region us-central1
-# --config D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/training/cloud.yml
-# --
-# --train_dir=gs://dataset-nrl/train
-# --pipeline_config_path=gs://dataset-nrl/train/ssd_mobilenet_v1_coco.config
-
 import os
 import io
 import tensorflow as tf
@@ -53,25 +22,10 @@ class_map["13"]="Schneider"
 class_map["14"]="Sol"
 class_map["15"]="Stella Artois"
 class_map["16"]="Otras"
-class_map["01n"] = 0
-class_map["02n"]= 0 
-class_map["03n"]= 0
-class_map["04n"]= 0
-class_map["05n"]= 0
-class_map["06n"]= 0
-class_map["07n"]= 0
-class_map["08n"]= 0
-class_map["09n"]= 0
-class_map["10n"]= 0
-class_map["11n"]= 0
-class_map["12n"]= 0
-class_map["13n"]= 0
-class_map["14n"]= 0
-class_map["15n"]= 0
-class_map["16n"]= 0
+
 
 flags = tf.app.flags
-flags.DEFINE_string('output_path', 'mytf.record', 'data/')
+flags.DEFINE_string('output_path', 'test_mytf.record', 'data/')
 FLAGS = flags.FLAGS
 
 
@@ -122,32 +76,20 @@ class Classes:
 def main(_):
   writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
   lista = []
-  n=0
-  with open("classes.txt", "r") as filestream:
+  with open("testclasses.txt", "r") as filestream:
     for line in filestream:
       currentline = line.split(",")
       classname = currentline[0].split(".")[0].split("_")[2]
-      print(line)
-      print("nombre: " + currentline[0] +
-      "\nbaseX: " + currentline[1] +
-      "\tbaseY: " + currentline[2] +
-      "\tancho: " + currentline[3] +
-      "\talto: " + currentline[4] + 
-      "\classname: " + class_map[classname] + 
-      "\n")
-      n=n+1
       xmin=int(currentline[1])
       xmax=xmin+int(currentline[3])
       ymin=int(currentline[2])
       ymax=ymin+int(currentline[4])
       oneclass = Classes(currentline[0],xmin,xmax,ymin,ymax,class_map[classname],int(classname))
       lista.append(oneclass)
-      class_map[classname+"n"]=class_map[classname+"n"]+1
-  #for item in lista:
-    #tf_example = create_tf_example(item)
-    #writer.write(tf_example.SerializeToString())
-  #writer.close()
-  print(class_map)
+  for item in lista:
+    tf_example = create_tf_example(item)
+    writer.write(tf_example.SerializeToString())
+  writer.close()
 
 if __name__ == '__main__':
   tf.app.run()
