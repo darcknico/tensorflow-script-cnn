@@ -25,7 +25,7 @@ class_map["16"]="Otras"
 
 
 flags = tf.app.flags
-flags.DEFINE_string('output_path', 'test_mytf.record', 'data/')
+flags.DEFINE_string('output_path', 'test_mytf.record', '')
 FLAGS = flags.FLAGS
 
 
@@ -38,11 +38,11 @@ def create_tf_example(example):
   filename = example.filename.encode('utf8')
   image_format = b'jpg'
 
-  xmins = [example.xmin/width] # List of normalized left x coordinates in bounding box (1 per box)
-  xmaxs = [example.xmax/width] # List of normalized right x coordinates in bounding box
+  xmins = [1/width] # List of normalized left x coordinates in bounding box (1 per box)
+  xmaxs = [719/width] # List of normalized right x coordinates in bounding box
   # (1 per box)
-  ymins = [example.ymin/height] # List of normalized top y coordinates in bounding box (1 per box)
-  ymaxs = [example.ymax/height] # List of normalized bottom y coordinates in bounding box
+  ymins = [1/height] # List of normalized top y coordinates in bounding box (1 per box)
+  ymaxs = [539/height] # List of normalized bottom y coordinates in bounding box
   # (1 per box)
   classes_text = [example.text.encode('utf8')] # List of string class name of bounding box (1 per box)
   classes = [example.identifier] # List of integer class id of bounding box (1 per box)

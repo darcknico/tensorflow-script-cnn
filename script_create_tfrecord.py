@@ -14,20 +14,23 @@
 ##Sol 14
 ##Stella Artois 15
 ##Otras 16
+# tensorflow/models
 # cd C:\Python36\Lib\site-packages\tensorflow\models
 # python object_detection/train.py --logtostderr 
-# --pipeline_config_path=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/training/ssd_mobilenet_v1_coco.config 
-# --train_dir=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/data
+# --pipeline_config_path=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/models/model/ssd_mobilenet_v1_coco.config 
+# --train_dir=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/models/model/train
 # 
 # gcloud ml-engine jobs submit training object_detection_`date +%s`
 # --job-dir=gs://dataset-nrl/train
 # --packages dist/object_detection-0.1.tar.gz,slim/dist/slim-0.1.tar.gz
 # --module-name object_detection.train
 # --region us-central1
-# --config D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/training/cloud.yml
+# --config D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/models/model/cloud.yml
 # --
 # --train_dir=gs://dataset-nrl/train
-# --pipeline_config_path=gs://dataset-nrl/train/ssd_mobilenet_v1_coco.config
+# --pipeline_config_path=gs://dataset-nrl/train/ssd_mobilenet_v1_coco_cloud.config
+#
+# tensorboard --logdir=D:/Estudio/AprendizajeAutomatico/tensorflow-script-cnn/models/model --port=8080
 
 import os
 import io
@@ -71,7 +74,7 @@ class_map["15n"]= 0
 class_map["16n"]= 0
 
 flags = tf.app.flags
-flags.DEFINE_string('output_path', 'mytf.record', 'data/')
+flags.DEFINE_string('output_path', 'mytf.record', '')
 FLAGS = flags.FLAGS
 
 
@@ -84,11 +87,11 @@ def create_tf_example(example):
   filename = example.filename.encode('utf8')
   image_format = b'jpg'
 
-  xmins = [example.xmin/width] # List of normalized left x coordinates in bounding box (1 per box)
-  xmaxs = [example.xmax/width] # List of normalized right x coordinates in bounding box
+  xmins = [1/width] # List of normalized left x coordinates in bounding box (1 per box)
+  xmaxs = [719/width] # List of normalized right x coordinates in bounding box
   # (1 per box)
-  ymins = [example.ymin/height] # List of normalized top y coordinates in bounding box (1 per box)
-  ymaxs = [example.ymax/height] # List of normalized bottom y coordinates in bounding box
+  ymins = [1/height] # List of normalized top y coordinates in bounding box (1 per box)
+  ymaxs = [539/height] # List of normalized bottom y coordinates in bounding box
   # (1 per box)
   classes_text = [example.text.encode('utf8')] # List of string class name of bounding box (1 per box)
   classes = [example.identifier] # List of integer class id of bounding box (1 per box)
@@ -143,10 +146,10 @@ def main(_):
       oneclass = Classes(currentline[0],xmin,xmax,ymin,ymax,class_map[classname],int(classname))
       lista.append(oneclass)
       class_map[classname+"n"]=class_map[classname+"n"]+1
-  #for item in lista:
-    #tf_example = create_tf_example(item)
-    #writer.write(tf_example.SerializeToString())
-  #writer.close()
+  for item in lista:
+    tf_example = create_tf_example(item)
+    writer.write(tf_example.SerializeToString())
+  writer.close()
   print(class_map)
 
 if __name__ == '__main__':
